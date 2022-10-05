@@ -3,12 +3,12 @@ driver:
   name: vagrant
   network:
     - ['forwarded_port', {guest: 8118, host: 8118, auto_correct: true}]
-  require_chef_omnibus: 13.12.14
+  require_chef_omnibus: 17.10.3
   box_check_update: true
 
 provisioner:
   name: chef_zero
-  product_version: 13.12.14
+  product_version: 17.10.3
   chef_license: accept-no-persist
 
 platforms:
