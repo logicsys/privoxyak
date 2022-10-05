@@ -34,8 +34,10 @@ ruby_block 'whitelist_centos' do
     data = File.read(rf.path, mode: 'r:iso-8859-1')
     data.gsub!(/(?<!\\)\\"/, '""')
 
-    patterns = CSV.new(data).map do |row|
-      Chef::Privoxyak::Helpers.action_pattern row[4]
+    patterns = []
+
+    data.each_line do |line|
+      patterns.append(Chef::Privoxyak::Helpers.action_pattern(line.chomp))
     end
 
     node.default['privoxyak']['whitelist']['CentOS'] =

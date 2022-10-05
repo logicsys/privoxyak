@@ -5,7 +5,7 @@
 # Cookbook:: privoxyak
 # Recipe:: whitelist_extras
 #
-# Copyright:: (C) 2017 Yakara Ltd
+# Copyright:: (C) 2022 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,11 +34,13 @@ ruby_block 'whitelist_extras' do
     data = File.read(rf.path, mode: 'r:iso-8859-1')
     data.gsub!(/(?<!\\)\\"/, '""')
 
-    patterns = CSV.new(data).map do |row|
-      Chef::Privoxyak::Helpers.action_pattern row[4]
+    patterns = []
+
+    data.each_line do |line|
+      patterns.append(Chef::Privoxyak::Helpers.action_pattern(line.chomp))
     end
 
-    node.default['privoxyak']['whitelist']['extras'] =
+    node.default['privoxyak']['whitelist']['CentOS-extras'] =
       Chef::Privoxyak::Helpers.normalize_patterns(patterns)
   end
 end
